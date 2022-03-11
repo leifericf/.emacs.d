@@ -52,7 +52,7 @@ flycheck_*.el
 .recentf
 .smex-items
 backups/
-projective-bookmarks.eld
+projectile-bookmarks.eld
 transient/
 
 ### macOS ###
