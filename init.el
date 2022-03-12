@@ -20,36 +20,34 @@
   (when (file-directory-p project)
     (add-to-list 'load-path project)))
 
-;; Install missing packages
+;; Install packages if they are missing
 (require 'packages)
 
-(defun init-install-packages ()
-  (packages-install
-   '(
-    cider
-    clojure-mode
-    clojure-mode-extra-font-locking
-    exec-path-from-shell
-    ido-completing-read+
-    magit
-    paredit
-    projectile
-    rainbow-delimiters
-    smex
-    solarized-theme
-    tagedit
-    )))
+;; Refresh package info if necessary
+(when (not package-archive-contents)
+  (package-refresh-contents))
 
-(condition-case nil
-    (init-install-packages)
-  (error
-   (package-refresh-contents)
-   (init-install-packages)))
+(defvar my-packages
+'(
+  cider
+  clojure-mode
+  clojure-mode-extra-font-locking
+  ido-completing-read+
+  magit
+  paredit
+  projectile
+  rainbow-delimiters
+  smex
+  solarized-theme
+  tagedit
+  ))
 
-;; Set up environment variables from the user's shell
 (when is-mac
-  (require-package 'exec-path-from-shell)
-  (exec-path-from-shell-initialize))
+  (add-to-list 'my-packages 'exec-path-from-shell))
+
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (package-install p)))
 
 ;; Load additional customizations
 (load "clojure.el")
