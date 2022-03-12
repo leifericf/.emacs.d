@@ -20,9 +20,6 @@
   (when (file-directory-p project)
     (add-to-list 'load-path project)))
 
-;; Install packages if they are missing
-(require 'packages)
-
 ;; Refresh package info if necessary
 (when (not package-archive-contents)
   (package-refresh-contents))
